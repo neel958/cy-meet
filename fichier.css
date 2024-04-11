@@ -1,0 +1,49 @@
+.background_image{
+    background-image: url('https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg');
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    filter: blur(3px);
+    background-size: cover;
+}
+
+.titre {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color : black;
+    font-size: 90px;
+}  
+
+
+
+
+
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(77, 77, 77); /* Fond semi-transparent pour que le texte reste lisible */
+    z-index : 100000; /* Assure que la barre est en haut de tout le reste */
+}
+
+
+.top-bar ul {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+.top-bar ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.top-bar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
