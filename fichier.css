@@ -1,33 +1,50 @@
 .background_image{
     background-image: url('https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg');
-    width: 100vw;
-    height: 100vh;
+    height: 1000px;
     z-index: -1;
-    filter: blur(3px);
+    filter: blur(1px);
     background-size: cover;
+}    
+
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .titre {
     position: absolute;
-    top: 5%;
+    top: 7%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color : black;
+    color : rgb(255, 255, 255);
     font-size: 90px;
 }  
 
+.rectangle_blanc{
+    background-color: rgb(231, 231, 231);
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    top : 700px;
 
 
+}
 
 
+.logo{
+    position: absolute;
+    width: 225px;
+    height: 75px;
+}
 
 .top-bar {
     position: fixed;
     top: 0;
+    height: 75px;
     left: 0;
     width: 100%;
-    background-color: rgb(77, 77, 77); /* Fond semi-transparent pour que le texte reste lisible */
-    z-index : 100000; /* Assure que la barre est en haut de tout le reste */
+    background-color: rgb(0, 0, 0);
+    z-index : 100000;
 }
 
 
@@ -39,11 +56,57 @@
 
 .top-bar ul li {
     display: inline;
-    margin-right: 20px;
+    margin-right: 40px;
+}
+
+.slogan{
+    position: absolute;
+    top: 20%;
+    color: white;
+    transform: translate(-50%, -50%);
+    left: 50%;
 }
 
 .top-bar ul li a {
     text-decoration: none;
     color: white;
     font-weight: bold;
+    line-height: 2.5;
 }
+.offres {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 80%;
+    margin-top: 50px;
+  }
+  
+  .offre {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    width: 45%;
+  }
+  
+  .offre.gratuite {
+    background-color: #aeaeae;
+  }
+  
+  .offre.premium {
+    background-color: #aeaeae;
+  }
+  
+  .offre h2 {
+    margin-top: 0;
+  }
+  
+
+  .offre a {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
