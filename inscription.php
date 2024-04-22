@@ -7,15 +7,9 @@
     <link rel="stylesheet" href="inscription.css" type="text/css">
 </head>
 <body>
-    <div class="top-bar">
-        <img src="https://tse4.mm.bing.net/th?id=OIP.y52QrvFkK2sK_g8YtkLf5QHaCd&pid=Api" class="logo">
-        <ul>   
-            <li><a href="accueil.html">Accueil</a></li>
-            <li><a href="connexion.html">Se connecter</a></li>
-            <li><a href="inscription.html">Inscription</a></li>
- 
-        </ul>
-    </div>
+<?php 
+  include 'top_bar.php'; 
+?>
 
     <form>
         <h2>Inscription</h2>
