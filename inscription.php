@@ -11,6 +11,7 @@
   include 'top_bar.php'; 
 ?>
 
+
     <form>
         <h2>Inscription</h2>
         <div class="champ">
