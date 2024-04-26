@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscirption</title>
-    <link rel="stylesheet" href="inscription.css" type="text/css">
+    <link rel="stylesheet" href="../css/inscription.css" type="text/css">
 </head>
 <body>
 <?php 
-  include 'top_bar.php'; 
+  include 'top_bar.php';
+  top_bar(); 
 ?>
 
 
@@ -38,28 +39,28 @@
           <input type="text" id="numeroEtudiant" name="numeroEtudiant" placeholder="Numéro d'étudiant" pattern="[0-9]{11}" required>
         </div>
         <button type="submit">S'inscrire</button>
-        <hr>Ou bien vous avez déjà un compte ? Dans ces cas là connextez-vous <a href="connexion.html">ici</a>
+        <hr>Ou bien vous avez déjà un compte ? Dans ces cas là connextez-vous <a href="connexion.php">ici</a>
       </form>
-      <script>
-        function mdp_visble1() {
-            var temp = document.getElementById("jsp1");
-            if (temp.type === "password") {
-                temp.type = "text";
-            }
-            else {
-                temp.type = "password";
-            }
-        }
-        function mdp_visble2() {
-            var temp = document.getElementById("jsp2");
-            if (temp.type === "password") {
-                temp.type = "text";
-            }
-            else {
-                temp.type = "password";
-            }
+    <script>
+      function mdp_visble1() {
+          var temp = document.getElementById("jsp1");
+          if (temp.type === "password") {
+            temp.type = "text";
+          }
+          else {
+              temp.type = "password";
+          }
+      }
+      function mdp_visble2() {
+          var temp = document.getElementById("jsp2");
+          if (temp.type === "password") {
+              temp.type = "text";
+          }
+          else {
+              temp.type = "password";
+          }
         
-        }
+      }
 </script>
 </body>
 </html>

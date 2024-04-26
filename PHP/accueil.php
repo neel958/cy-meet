@@ -4,21 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'accueil</title>
-    <link rel="stylesheet" href="accueil.css" type="text/css">
+    <link rel="stylesheet" href="../css/accueil.css" type="text/css">
 </head>
 <body>
 
-    <div class="background_image"></div>
-    </div>
+<div class="background_image"></div>
     <h1 class = "titre">Cy meet</h1>
-    <div class="top-bar">
-        <img src="https://tse4.mm.bing.net/th?id=OIP.y52QrvFkK2sK_g8YtkLf5QHaCd&pid=Api" class="logo">
-        <ul>   
-            <li><a href="accueil.html">Accueil</a></li>
-            <li><a href="connexion.html">Se connecter</a></li>
-            <li><a href="inscription.html">Inscription</a></li>
- 
-        </ul>
+<?php 
+  include 'top_bar.php';
+  top_bar(); 
+    ?>
     </div>
     <div class = "slogan">
         <h3>Cy meet le site de rencontre pour étudiant</h3>

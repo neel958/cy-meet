@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="connexion.css" type="text/css">
+    <link rel="stylesheet" href="../css/connexion.css" type="text/css">
 </head>
 <body>
-    <div class="top-bar">
-        <img src="https://tse4.mm.bing.net/th?id=OIP.y52QrvFkK2sK_g8YtkLf5QHaCd&pid=Api" class="logo">
-        <ul>   
-            <li><a href="accueil.html">Accueil</a></li>
-            <li><a href="connexion.html">Se connecter</a></li>
-            <li><a href="inscription.html">Inscription</a></li>
-        </ul>
-    </div>
+<?php 
+  include 'top_bar.php';
+  top_bar(); 
+?>
     <div class="formulaire">
         <h2>Connexion</h2>
         <form method="post" action="connexion.php" >
@@ -28,8 +24,7 @@
             </div>
             <div>
                 <button type="submit">Se connecter</button>
-                <hr>Ou bien vous n'avez pas de compte ? Dans ce cas là inscrivez-vous <a href="inscription.html">ici.</a>
-                <hr><a href="mot_de_passe_oublier.html">Mot de passe oublier ?</a>
+                <hr>Ou bien vous n'avez pas de compte ? Dans ce cas là inscrivez-vous <a href="inscription.php">ici.</a>
                 </form>
             </div>
 
