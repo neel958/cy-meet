@@ -11,7 +11,7 @@
 <div class="background_image"></div>
     <h1 class = "titre">Cy meet</h1>
 <?php 
-  include 'top_bar.php';
+  include 'functions.php';
   top_bar(); 
     ?>
     </div>
@@ -22,13 +22,18 @@
         <div class="offres">
             <div class="offre gratuite">
               <h2>Offre gratuite</h2>
-              <p>Informations sur l'offre gratuite</p>
-              <a href="connexion.html">S'inscrire à l'offre gratuite</a>
+              <p>L'offre accessible à tous, certaines fonctionnalitées sont restreintes.</p>
+              <a href="#">S'inscrire à l'offre gratuite</a>
             </div>
             <div class="offre premium">
               <h2>Offre premium</h2>
-              <p>Informations sur l'offre premium</p>
-              <a href="connexion.html">S'inscrire à l'offre premium</a>
+              <p>Pour .€/mois vous avez accés à la totalité des fonctionnalitées.</p>
+              <a href="#">S'inscrire à l'offre premium</a>
+            </div>
+            <div class="offre free_tour">
+              <h2>Tour gratuit</h2>
+              <p>Un rapide apperçu (5 min) des fonctionnalitées premium.</p>
+              <a href="#">S'inscrire à l'offre premium</a>
             </div>
           </div>
     </div>

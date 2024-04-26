@@ -61,7 +61,7 @@ margin-right: 40px;
 
 .slogan{
   position: absolute;
-  top: 20%;
+  top: 22%;
   color: white;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -84,15 +84,18 @@ margin-right: 40px;
 .offre {
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 20px;
+  padding: 40px;
+  margin-right: 10px;
   text-align: center;
   width: 45%;
 }
 
+.offre.free_tour{
+  background-color: #aeaeae;
+}
 .offre.gratuite {
   background-color: #aeaeae;
 }
-
 .offre.premium {
   background-color: #aeaeae;
 }
