@@ -11,37 +11,50 @@ function top_bar(){
     </ul>
 </div>");
 }
+function top_bar_connecté(){
+  echo("<div class='top-bar'>
+  <img src='../Images\CY Cergy Paris Universite_coul.jpg' class = 'logo'>
+  <ul>   
+      <li><a href='accueil_connecté.php'>Accueil</a></li>
+      <li><a href='#'>Profil</a></li>
 
+  </ul>
+</div>");
+}
 
 
 function formulaire_inscription(){
-    echo("<form>
+    echo("<form method='post' action='connexion.php'>
     <h2>Inscription</h2>
     <div class='champ'>
-      <input type='text' name='nom' placeholder='Nom' required>
+      <input type='text' name='nom' placeholder='Nom' >
     </div>
     <div class='champ'>
-      <input type='text' name='prenom' placeholder='Prénom' required>
+      <input type='text' name='prenom' placeholder='Prénom' >
     </div>
     <div class='champ'>
-      <input type='date' id='dateNaissance' name='dateNaissance' placeholder='Date de naissance' required>
+      <input type='date' id='dateNaissance' name='dateNaissance' placeholder='Date de naissance' >
     </div>
     <div class='champ'>
       <input type='email' id='email' name='email' placeholder='Email' required>
     </div>
-    <div class='champ'>
-      <input type='password' id='jsp1'  name='motDePasse' placeholder='Mot de passe' required>
-      <img src='https://tse2.mm.bing.net/th?id=OIP.dadmIJUfMNKr8IJhXPxYqwHaFj&pid=Api' class='mdp_visible1' onclick='mdp_visble1()'>
+    <div class='type'>
+    Vous êtes : <input type='radio' id='type' name='type' >Homme
+    <input type = 'radio' name = 'type' >Femme
     </div>
     <div class='champ'>
-      <input type='password' id='jsp' name='confirmationMotDePasse' placeholder='Confirmation du mot de passe' required>
-      <img src='https://tse2.mm.bing.net/th?id=OIP.dadmIJUfMNKr8IJhXPxYqwHaFj&pid=Api' class='mdp_visible2' onclick='mdp_visble2()'>
+      <input type='password' id='mdp1'  name='motDePasse' placeholder='Mot de passe' required>
+      <img src='../Images\show_password.jpg' class='mdp_visible1' onclick='mdp_visble1()'>
     </div>
     <div class='champ'>
-      <input type='text' id='numeroEtudiant' name='numeroEtudiant' placeholder='Numéro d'étudiant' pattern='[0-9]{11}' required>
+      <input type='password' id='mdp2' name='confirmationMotDePasse' placeholder='Confirmation du mot de passe' required>
+      <img src='../Images/show_password.jpg' class='mdp_visible2' onclick='mdp_visble2()'>
     </div>
-    <button type='submit'>S'inscrire</button>
-    <hr>Ou bien vous avez déjà un compte ? Dans ces cas là connextez-vous <a href='connexion.php'>ici</a>
+    <div class='champ'>
+      <input type='text' id='numeroEtudiant' name='numeroEtudiant' placeholder='Numéro étudiant' pattern='[0-9]{11}' >
+    </div>
+    <button type='submit' onclick='no_space()' >S'inscrire</button>
+    <hr>Ou bien vous avez déjà un compte ? Dans ces cas là connectez-vous <a href='connexion.php'>ici</a>
   </form>");
 }
 
@@ -53,8 +66,8 @@ function formulaire_connexion(){
             <input type='email' id='email' name='email' placeholder='Email' required>
         </div>
         <div class='champ'>
-            <input type='password' name='password' id='jsp' placeholder='Mot de passe' required>
-            <img src='https://tse2.mm.bing.net/th?id=OIP.dadmIJUfMNKr8IJhXPxYqwHaFj&pid=Api' class='mdp_visible' onclick='mdp_visble()'>
+            <input type='password' name='password' id='mdp' placeholder='Mot de passe' required>
+            <img src='../Images/show_password.jpg' class='mdp_visible' onclick='mdp_visble()'>
             
         </div>
         <div>
@@ -63,4 +76,16 @@ function formulaire_connexion(){
             </form>
         </div>");
 }
-
+function EcrireLogs($email, $mdp) {
+  if (!file_exists('../Fichiers/logs.txt')) {
+    $fichier = fopen('../Fichiers/logs.txt', 'w');
+    fclose($fichier);
+}
+  $emplacement_fichier = '../Fichiers/logs.txt';
+  $donnees = "$email $mdp\n";
+  $contenuFichier = file_get_contents($emplacement_fichier); // $contenu_fichier prend les données du fichier logs.txt
+  if (strpos($contenuFichier, $donnees) !== false) { // cherche $donnes dans $contenu_fichier, si != false (existe) alors ne rien ecrire
+      return;
+  }
+  file_put_contents($emplacement_fichier, $donnees, FILE_APPEND); // si $donnees n'existe pas dans $contenu_fichier, alors ecrire $donnees dans $contenu_fichier (à la fin du fichier d'où le file_append)
+}

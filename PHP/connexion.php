@@ -11,7 +11,13 @@
 <?php 
   include 'functions.php';
   top_bar();
-  formulaire_connexion() 
+  formulaire_connexion();
+  if(isset($_POST["email"]) && isset($_POST["motDePasse"])) {
+
+    $email = $_POST["email"];
+    $mdp = $_POST["motDePasse"];
+    EcrireLogs($email, $mdp);
+}
 ?>
 
 

@@ -48,6 +48,11 @@ body{
     line-height: 2.5;
 }
 
+.type{
+  height: 50px;
+  width: 100%;
+}
+
 form {
     width: 300px;
     margin: 0 auto;

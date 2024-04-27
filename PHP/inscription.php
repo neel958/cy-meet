@@ -12,6 +12,9 @@
   include 'functions.php';
   top_bar(); 
   formulaire_inscription();
+  $email = $_POST["email"];
+  $mdp = $_POST["motDePasse"];
+
 ?>
 
 
