@@ -2,11 +2,11 @@
 
 function top_bar(){
     echo("<div class='top-bar'>
-    <img src='../Images\CY Cergy Paris Universite_coul.jpg' class = 'logo'>
+    <img src=\"../Images\CY Cergy Paris Universite_coul.jpg\" class = \"logo\">
     <ul>   
-        <li><a href='accueil.php'>Accueil</a></li>
-        <li><a href='connexion.php'>Se connecter</a></li>
-        <li><a href='inscription.php'>Inscription</a></li>
+        <li><a href=\"accueil.php\">Accueil</a></li>
+        <li><a href=\"connexion.php\">Se connecter</a></li>
+        <li><a href=\"inscription.php\">Inscription</a></li>
 
     </ul>
 </div>");
@@ -24,7 +24,7 @@ function top_bar_connecté(){
 
 
 function formulaire_inscription(){
-    echo("<form method='post' action='connexion.php'>
+    echo("<form method='post' action=\"connexion.php\">
     <h2>Inscription</h2>
     <div class='champ'>
       <input type='text' name='nom' placeholder='Nom' >
@@ -61,12 +61,12 @@ function formulaire_inscription(){
 function formulaire_connexion(){
     echo("<div class='formulaire'>
     <h2>Connexion</h2>
-    <form method='post' action='connexion.php' >
+    <form method='post'  action=\"traitement_connexion.php\">
         <div class='champ'>
-            <input type='email' id='email' name='email' placeholder='Email' required>
+            <input type='email' name=\"email\" placeholder='Email' required>
         </div>
         <div class='champ'>
-            <input type='password' name='password' id='mdp' placeholder='Mot de passe' required>
+            <input type='password' name=\"motDePasse\" id='mdp' placeholder='Mot de passe' required>
             <img src='../Images/show_password.jpg' class='mdp_visible' onclick='mdp_visble()'>
             
         </div>
@@ -88,4 +88,53 @@ function EcrireLogs($email, $mdp) {
       return;
   }
   file_put_contents($emplacement_fichier, $donnees, FILE_APPEND); // si $donnees n'existe pas dans $contenu_fichier, alors ecrire $donnees dans $contenu_fichier (à la fin du fichier d'où le file_append)
+}
+
+function lire_fichier_public_user($fichier) {
+  $tableau_associatif = array();
+  $handle = fopen($fichier, 'r');
+  if ($handle) {
+      while (($line = fgets($handle)) !== false) {
+          $data = explode(' ', $line);
+          $email = trim($data[0]);
+          $mot_de_passe = trim($data[1]);
+          $tableau_associatif[] = array('email' => $email, 'mot_de_passe' => $mot_de_passe);
+      }
+      fclose($handle);
+  } else {
+      echo "Erreur : impossible d'ouvrir le fichier $fichier";
+  }
+  return $tableau_associatif;
+}
+
+function verifie_identifiant(){
+  $tableau = lire_fichier_public_user('../Fichiers/logs.txt');
+  $email = $_POST["email"];
+  $mot_de_passe = $_POST["motDePasse"]; // Nom du champ dans le formulaire
+  $trouve = false;
+  foreach ($tableau as $utilisateur) {
+      if ($utilisateur["email"] == $email && $utilisateur["mot_de_passe"] == $mot_de_passe) {
+          $trouve = true;
+          break;
+      }
+  }
+  if($trouve){
+    header("Location: accueil_connecté.php");
+  }
+  else{
+    echo "<script>alert('Identifiants incorrects')</script>";
+    echo "<script>window.location.href='connexion.php'</script>";
+  }
+}
+
+function verifier_email_existe($email) {
+  $fichier_logs = '../Fichiers/logs.txt';
+
+  $contenu_fichier = file_get_contents($fichier_logs);
+  $a = strpos($contenu_fichier, $email);
+  if (strpos($contenu_fichier, $email) !== false) {
+      return true; // L'email existe
+  } else {
+      return false; // L'email n'existe pas
+  }
 }

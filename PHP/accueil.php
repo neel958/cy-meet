@@ -13,7 +13,7 @@
 <?php 
   include 'functions.php';
   top_bar(); 
-    ?>
+?>
     </div>
     <div class = "slogan">
         <h3>Cy meet le site de rencontre pour étudiant</h3>
@@ -33,7 +33,7 @@
             <div class="offre free_tour">
               <h2>Tour gratuit</h2>
               <p>Un rapide apperçu (5 min) des fonctionnalitées premium.</p>
-              <a href="#">S'inscrire à l'offre premium</a>
+              <a href="#">Faire une visite gratuite</a>
             </div>
           </div>
     </div>

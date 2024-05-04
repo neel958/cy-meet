@@ -10,14 +10,21 @@
 <body>
 <?php 
   include 'functions.php';
-  top_bar();
-  formulaire_connexion();
-  if(isset($_POST["email"]) && isset($_POST["motDePasse"])) {
 
+  if(isset($_POST["email"]) && isset($_POST["motDePasse"])){
     $email = $_POST["email"];
     $mdp = $_POST["motDePasse"];
-    EcrireLogs($email, $mdp);
-}
+    if (verifier_email_existe($email)) {
+      echo "<script>alert('L\'adresse e-mail est déjà utilisée. Veuillez en choisir une autre.');</script>";
+      header("Refresh: 1; URL=inscription.php"); //redirige apres 1 seocnde vers inscription.php, obligé sinon ca dirige vers connexion.php
+      exit();
+  } 
+  else {
+      EcrireLogs($email, $mdp);
+  }
+  }
+  top_bar();
+  formulaire_connexion();
 ?>
 
 

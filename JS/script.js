@@ -19,7 +19,7 @@ function mdp_visble2() {
   
 }
 function mdp_visble() {
-    var temp = document.getElementById("jsp");
+    var temp = document.getElementById("mdp");
     if (temp.type === "password") {
         temp.type = "text";
     }
@@ -32,7 +32,7 @@ function no_space() {
     let mdp = document.getElementById('mdp1').value;
     if (mdp.includes(' ')) { // verifie si le mdp a un espace
         alert('Espace interdit');
-        location.reload(); // f5 la page
+        location.reload(); // actualise la page
     }
     else{
         same_password(); // si il n'y a pas d'espace, on regarde si ils sont identiques
@@ -46,11 +46,5 @@ function same_password(){
     if(mdp1!==mdp2){
         alert('Les mots de passe ne sont pas identiques.');
         location.reload(); // actualise la page
-    }
-    ecrire_logs_fichier();
-   
-}
-
-function ecrire_logs_fichier(){
-  
+    } 
 }
