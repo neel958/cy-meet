@@ -12,7 +12,8 @@
     <h1 class = "titre">Cy meet</h1>
 <?php 
   include 'functions.php';
-  top_bar(); 
+  $tableau = array("Accueil" => "accueil.php", "Se connecter"=> "connexion.php", "Inscription" => "inscription.php");
+  top_bar($tableau); 
 ?>
     </div>
     <div class = "slogan">

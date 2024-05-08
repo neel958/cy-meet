@@ -9,22 +9,31 @@
 </head>
 <body>
 <?php 
-  include 'functions.php';
+    include 'functions.php';
+    session_start();
+    if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['dateNaissance']) && isset($_POST['type']) && isset($_POST['numeroEtudiant'])&& isset($_POST["email"]) && isset($_POST["motDePasse"])){
+      $email = $_POST["email"];
+      $mdp = $_POST["motDePasse"];
+      $nom = $_POST['nom'];
+      $prenom = $_POST['prenom'];
+      $dateNaissance = $_POST['dateNaissance'];
+      $type = $_POST['type'];
+      $numeroEtudiant = $_POST['numeroEtudiant'];
+      $_SESSION['user_email'] = $email;
 
-  if(isset($_POST["email"]) && isset($_POST["motDePasse"])){
-    $email = $_POST["email"];
-    $mdp = $_POST["motDePasse"];
-    if (verifier_email_existe($email)) {
-      echo "<script>alert('L\'adresse e-mail est déjà utilisée. Veuillez en choisir une autre.');</script>";
-      header("Refresh: 1; URL=inscription.php"); //redirige apres 1 seocnde vers inscription.php, obligé sinon ca dirige vers connexion.php
-      exit();
-  } 
-  else {
-      EcrireLogs($email, $mdp);
-  }
-  }
-  top_bar();
-  formulaire_connexion();
+      if (verifier_email_existe($email)) {
+        echo "<script>alert('L\'adresse e-mail est déjà utilisée. Veuillez en choisir une autre.');</script>";
+        header("Refresh: 1; URL=inscription.php"); //redirige apres 1 seocnde vers inscription.php, obligé sinon ca dirige vers connexion.php
+        exit();
+    } 
+    else {
+        EcrireLogs($email, $mdp);
+        enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $type, $numeroEtudiant, $email);
+    }
+    }
+    $tableau = array("Accueil" => "accueil.php", "Se connecter"=> "connexion.php", "Inscription" => "inscription.php");
+    top_bar($tableau);
+    formulaire_connexion();
 ?>
 
 

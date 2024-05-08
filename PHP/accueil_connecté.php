@@ -11,14 +11,18 @@
 <div class="background_image"></div>
     <h1 class = "titre">Cy meet</h1>
 <?php 
-  include 'functions.php';
-  top_bar_connecté(); 
-    ?>
-    </div>
-    <div class = "slogan">
-        <h3>Cy meet le site de rencontre pour étudiant</h3>
-    </div>
+        
+    session_start();
+    include 'functions.php';
+    $tableau = array("Accueil" => "accueil.php", "Profil"=> "profil.php");
+    top_bar($tableau); 
+        ?>
+        </div>
+        <div class = "slogan">
+            <h3>Cy meet le site de rencontre pour étudiant</h3>
+        </div>
 
+</div>
 </body>
 </html>
 

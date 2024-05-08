@@ -1,4 +1,2 @@
-ddd@ddd.com dd
-utilisateur1@example.com az
-nael180904@gmail.com dd
-utilisateur10@example.com df
+nael180904@gmail.com	az
+utilisateur1@example.com	az

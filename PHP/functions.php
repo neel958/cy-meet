@@ -1,25 +1,14 @@
 <?php
 
-function top_bar(){
+function top_bar($tableau){
     echo("<div class='top-bar'>
     <img src=\"../Images\CY Cergy Paris Universite_coul.jpg\" class = \"logo\">
-    <ul>   
-        <li><a href=\"accueil.php\">Accueil</a></li>
-        <li><a href=\"connexion.php\">Se connecter</a></li>
-        <li><a href=\"inscription.php\">Inscription</a></li>
-
-    </ul>
-</div>");
-}
-function top_bar_connecté(){
-  echo("<div class='top-bar'>
-  <img src='../Images\CY Cergy Paris Universite_coul.jpg' class = 'logo'>
-  <ul>   
-      <li><a href='accueil_connecté.php'>Accueil</a></li>
-      <li><a href='#'>Profil</a></li>
-
-  </ul>
-</div>");
+    <ul>");   
+    foreach($tableau as $page_name => $page_url){
+      echo("<li><a href=\"$page_url\">$page_name</a></li>");
+    }
+    echo("</ul>
+    </div>");
 }
 
 
@@ -39,8 +28,8 @@ function formulaire_inscription(){
       <input type='email' id='email' name='email' placeholder='Email' required>
     </div>
     <div class='type'>
-    Vous êtes : <input type='radio' id='type' name='type' >Homme
-    <input type = 'radio' name = 'type' >Femme
+    Vous êtes : <input checked type='radio' id='type' value =\"Homme\" name='type' >Homme
+    <input type = 'radio' value =\"Femme\" name = 'type' >Femme
     </div>
     <div class='champ'>
       <input type='password' id='mdp1'  name='motDePasse' placeholder='Mot de passe' required>
@@ -82,7 +71,7 @@ function EcrireLogs($email, $mdp) {
     fclose($fichier);
 }
   $emplacement_fichier = '../Fichiers/logs.txt';
-  $donnees = "$email $mdp\n";
+  $donnees = $email."\t".$mdp."\n";
   $contenuFichier = file_get_contents($emplacement_fichier); // $contenu_fichier prend les données du fichier logs.txt
   if (strpos($contenuFichier, $donnees) !== false) { // cherche $donnes dans $contenu_fichier, si != false (existe) alors ne rien ecrire
       return;
@@ -95,7 +84,7 @@ function lire_fichier_public_user($fichier) {
   $handle = fopen($fichier, 'r');
   if ($handle) {
       while (($line = fgets($handle)) !== false) {
-          $data = explode(' ', $line);
+          $data = explode("\t", $line);
           $email = trim($data[0]);
           $mot_de_passe = trim($data[1]);
           $tableau_associatif[] = array('email' => $email, 'mot_de_passe' => $mot_de_passe);
@@ -137,4 +126,150 @@ function verifier_email_existe($email) {
   } else {
       return false; // L'email n'existe pas
   }
+}
+
+function enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $sexe, $numeroEtudiant, $email) {
+  $cheminFichier = "../Fichiers/data.txt";
+
+  $dateFormatted = date("d-m-Y", strtotime($dateNaissance));
+  $ligne = $nom . "\t" . $prenom . "\t" . $dateFormatted . "\t" . $sexe . "\t" . $numeroEtudiant . "\t" . $email . "\n";
+
+  // Vérifier si le fichier existe, sinon le créer
+  if (!file_exists($cheminFichier)) {
+      $fichier = fopen($cheminFichier, 'w'); // Création du fichier si non existant
+      fclose($fichier);
+  }
+
+  // Récupérer le contenu existant pour vérifier si les données sont déjà présentes
+  $contenuFichier = file_get_contents($cheminFichier);
+  if (strpos($contenuFichier, $ligne) !== false) {
+      // Si les données sont déjà présentes, ne rien faire
+      return;
+  }
+
+  // Si les données ne sont pas encore dans le fichier, les ajouter
+  file_put_contents($cheminFichier, $ligne, FILE_APPEND);
+}
+
+
+function info_mail($email) {
+  $fichier = "../Fichiers/data.txt";
+  $handle = fopen($fichier, 'r');
+  if ($handle) {
+      while (($line = fgets($handle)) !== false) {
+          $data = explode("\t", $line);
+          if (trim($data[5]) == $email) {
+              fclose($handle);
+              return [
+                  'nom' => trim($data[0]),
+                  'prenom' => trim($data[1]),
+                  'dateNaissance' => trim($data[2]),
+                  'type' => trim($data[3]),
+                  'numeroEtudiant' => trim($data[4])
+              ];
+          }
+      }
+      fclose($handle);
+  } else {
+      echo "Erreur : impossible d'ouvrir le fichier $fichier";
+  }
+  return null;
+}
+
+
+function updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtudiant) {
+  $fichier = "../Fichiers/data.txt";
+  $tempFile = "../Fichiers/temp.txt";
+  $handle = fopen($fichier, 'r');
+  $tempHandle = fopen($tempFile, 'w');
+
+  if ($handle && $tempHandle) {
+      while (($line = fgets($handle)) !== false) {
+          $data = explode("\t", $line);
+          if (trim($data[5]) == $email) {
+
+              $newLine = "$nom\t$prenom\t$dateNaissance\t$type\t$numeroEtudiant\t$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
+              fputs($tempHandle, $newLine);
+          } else {
+
+              fputs($tempHandle, $line);
+          }
+      }
+      fclose($handle);
+      fclose($tempHandle);
+
+
+      if (!rename($tempFile, $fichier)) {
+          echo "Erreur lors de la mise à jour des informations.";
+          return false;
+      }
+      return true;
+  } else {
+      if ($handle) fclose($handle);
+      if ($tempHandle) fclose($tempHandle);
+      echo "Erreur : impossible d'ouvrir le fichier.";
+      return false;
+  }
+}
+function info_additionnel($email, $profession, $lieuResidence, $situationAmoureuse, $descriptionPhysique, $infosPersonnelles) {
+  $cheminFichier = "../Fichiers/additionnel_info.txt";
+  $ligne = "$profession\t$lieuResidence\t$situationAmoureuse\t$descriptionPhysique\t$infosPersonnelles\t$email\n";
+
+  if (!file_exists($cheminFichier)) {
+      $fichier = fopen($cheminFichier, 'w');
+      fclose($fichier);
+  }
+
+  $lines = file($cheminFichier, FILE_IGNORE_NEW_LINES);
+
+
+  $emailFound = false;
+  foreach ($lines as $key => $line) {
+      $fields = explode("\t", $line);
+      if ($fields[count($fields) - 1] == $email) {
+          $lines[$key] = $ligne; // modifie la ligne si le mail est trouvé
+          $emailFound = true;
+          break;
+      }
+  }
+
+  if (!$emailFound) { // sinon on ajoute simplement la nouvelle ligne
+      $lines[] = $ligne;
+  }
+
+  file_put_contents($cheminFichier, implode("\n", $lines));
+}
+
+function info_aditionnel_tableau($email) {
+  $file = "../Fichiers/additionnel_info.txt";
+  $info = [];
+
+  if (!file_exists($file)) {
+    touch($file); // Crée le fichier s'il n'existe pas
+  }
+  $handle = fopen($file, 'r');
+  if ($handle) {
+
+      while (($line = fgets($handle)) !== false) {
+
+          $data = explode("\t", $line);
+
+          if (trim($data[5]) == $email) {
+              $info = [
+                  'profession' => trim($data[0]),
+                  'lieuResidence' => trim($data[1]),
+                  'situationAmoureuse' => trim($data[2]),
+                  'descriptionPhysique' => trim($data[3]),
+                  'infosPersonnelles' => trim($data[4])
+              ];
+              fclose($handle);
+              return $info;
+          }
+      }
+
+      fclose($handle);
+  } else {
+      echo "Erreur : impossible d'ouvrir le fichier $file";
+  }
+  return null;
 }

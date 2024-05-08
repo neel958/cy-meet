@@ -10,7 +10,8 @@
 <body>
 <?php 
   include 'functions.php';
-  top_bar(); 
+  $tableau = array("Accueil" => "accueil.php", "Se connecter"=> "connexion.php", "Inscription" => "inscription.php");
+  top_bar($tableau); 
   formulaire_inscription();
 ?>
 
