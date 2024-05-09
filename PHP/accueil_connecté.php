@@ -14,7 +14,7 @@
         
     session_start();
     include 'functions.php';
-    $tableau = array("Accueil" => "accueil.php", "Profil"=> "profil.php");
+    $tableau = array("Accueil" => "accueil_connecté.php", "Profil"=> "profil.php");
     top_bar($tableau); 
         ?>
         </div>

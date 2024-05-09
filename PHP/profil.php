@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'accueil</title>
-    <link rel="stylesheet" href="../css/accueil.css" type="text/css">
+    <link rel="stylesheet" href="../css/profil.css" type="text/css">
 </head>
 <body>
 
@@ -63,6 +63,6 @@
 
 
 
-    $tableau = array("Accueil" => "accueil.php", "Profil"=> "profil.php");
+    $tableau = array("Accueil" => "accueil_connecté.php", "Profil"=> "profil.php");
     top_bar($tableau);
 ?>
