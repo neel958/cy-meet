@@ -14,12 +14,14 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['dateNaissance'], $_POST['type
     $situationAmoureuse = $_POST['situationAmoureuse'] ?? '';
     $descriptionPhysique = $_POST['descriptionPhysique'] ?? '';
     $infosPersonnelles = $_POST['infosPersonnelles'] ?? '';
+    $mdp = $_POST['motdepasse'];
     
 
 
 
     updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtudiant); // mise à jour dans la base de donnée
     info_additionnel($email, $profession, $lieuResidence, $situationAmoureuse, $descriptionPhysique, $infosPersonnelles);
+    updatePassword($email, $mdp);
 
     header("Location: profil.php"); // quand tout est bon, redirige vers la page de modification
     exit();

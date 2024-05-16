@@ -1,0 +1,38 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+h1 {
+    color: #333;
+    text-align: center;
+}
+.subscription-option {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #666;
+}
+input[type="radio"] {
+    margin-right: 10px;
+}
+button {
+
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #af4c4c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}

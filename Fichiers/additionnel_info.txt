@@ -1,1 +1,3 @@
-etudiant	rouen	jai depensé 1300€ pour une toxico	gros		riyane@gmail.com
+etudiant|cergy|seul|bg|e2|nael180904@gmail.com
+etudiant|e||e|d|na@gmail.com
+|a|z|e|r|utilisateur1@example.com

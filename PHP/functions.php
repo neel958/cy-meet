@@ -71,7 +71,7 @@ function EcrireLogs($email, $mdp) {
     fclose($fichier);
 }
   $emplacement_fichier = '../Fichiers/logs.txt';
-  $donnees = $email."\t".$mdp."\n";
+  $donnees = $email."|".$mdp."\n";
   $contenuFichier = file_get_contents($emplacement_fichier); // $contenu_fichier prend les données du fichier logs.txt
   if (strpos($contenuFichier, $donnees) !== false) { // cherche $donnes dans $contenu_fichier, si != false (existe) alors ne rien ecrire
       return;
@@ -84,7 +84,7 @@ function lire_fichier_public_user($fichier) {
   $handle = fopen($fichier, 'r');
   if ($handle) {
       while (($line = fgets($handle)) !== false) {
-          $data = explode("\t", $line);
+          $data = explode("|", $line);
           $email = trim($data[0]);
           $mot_de_passe = trim($data[1]);
           $tableau_associatif[] = array('email' => $email, 'mot_de_passe' => $mot_de_passe);
@@ -103,24 +103,21 @@ function verifie_identifiant(){
   $trouve = false;
   foreach ($tableau as $utilisateur) {
       if ($utilisateur["email"] == $email && $utilisateur["mot_de_passe"] == $mot_de_passe) {
-          $trouve = true;
-          break;
+          $_SESSION['user_email'] = $email;
+          header("Location: accueil_connecté.php");  // Redirection vers la page d'accueil connecté
+          exit();
       }
   }
-  if($trouve){
-    header("Location: accueil_connecté.php");
-  }
-  else{
-    echo "<script>alert('Identifiants incorrects')</script>";
-    echo "<script>window.location.href='connexion.php'</script>";
-  }
+
+  echo "<script>alert('Identifiants incorrects')</script>";
+  echo "<script>window.location.href='connexion.php'</script>";
+  exit();
 }
 
 function verifier_email_existe($email) {
   $fichier_logs = '../Fichiers/logs.txt';
 
   $contenu_fichier = file_get_contents($fichier_logs);
-  $a = strpos($contenu_fichier, $email);
   if (strpos($contenu_fichier, $email) !== false) {
       return true; // L'email existe
   } else {
@@ -132,7 +129,7 @@ function enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $sexe, $nu
   $cheminFichier = "../Fichiers/data.txt";
 
   $dateFormatted = date("d-m-Y", strtotime($dateNaissance));
-  $ligne = $nom . "\t" . $prenom . "\t" . $dateFormatted . "\t" . $sexe . "\t" . $numeroEtudiant . "\t" . $email . "\n";
+  $ligne = $nom . "|" . $prenom . "|" . $dateFormatted . "|" . $sexe . "|" . $numeroEtudiant . "|" . $email . "\n";
 
   // Vérifier si le fichier existe, sinon le créer
   if (!file_exists($cheminFichier)) {
@@ -157,7 +154,7 @@ function info_mail($email) {
   $handle = fopen($fichier, 'r');
   if ($handle) {
       while (($line = fgets($handle)) !== false) {
-          $data = explode("\t", $line);
+          $data = explode("|", $line);
           if (trim($data[5]) == $email) {
               fclose($handle);
               return [
@@ -165,7 +162,8 @@ function info_mail($email) {
                   'prenom' => trim($data[1]),
                   'dateNaissance' => trim($data[2]),
                   'type' => trim($data[3]),
-                  'numeroEtudiant' => trim($data[4])
+                  'numeroEtudiant' => trim($data[4]),
+                  'email' => trim($data[5])
               ];
           }
       }
@@ -185,10 +183,10 @@ function updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtu
 
   if ($handle && $tempHandle) {
       while (($line = fgets($handle)) !== false) {
-          $data = explode("\t", $line);
+          $data = explode("|", $line);
           if (trim($data[5]) == $email) {
 
-              $newLine = "$nom\t$prenom\t$dateNaissance\t$type\t$numeroEtudiant\t$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
+              $newLine = "$nom|$prenom|$dateNaissance|$type|$numeroEtudiant|$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
               fputs($tempHandle, $newLine);
           } else {
 
@@ -211,9 +209,43 @@ function updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtu
       return false;
   }
 }
+
+
+function updatePassword($email, $newPassword) {
+  $fichier = "../Fichiers/logs.txt";
+  $tempFile = "../Fichiers/temp.txt";
+  $handle = fopen($fichier, 'r');
+  $tempHandle = fopen($tempFile, 'w');
+
+  if ($handle && $tempHandle) {
+      while (($line = fgets($handle)) !== false) {
+          $data = explode("|", $line);
+          if (trim($data[0]) == $email) {
+              $newLine = "$email|$newPassword\n";
+              fputs($tempHandle, $newLine);
+          } else {
+              fputs($tempHandle, $line); 
+          }
+      }
+      fclose($handle);
+      fclose($tempHandle);
+
+      if (!rename($tempFile, $fichier)) {
+          echo "Erreur lors de la mise à jour du mot de passe.";
+          return false;
+      }
+      return true;
+  } else {
+      if ($handle) fclose($handle);
+      if ($tempHandle) fclose($tempHandle);
+      echo "Erreur : impossible d'ouvrir le fichier.";
+      return false;
+  }
+}
+
 function info_additionnel($email, $profession, $lieuResidence, $situationAmoureuse, $descriptionPhysique, $infosPersonnelles) {
   $cheminFichier = "../Fichiers/additionnel_info.txt";
-  $ligne = "$profession\t$lieuResidence\t$situationAmoureuse\t$descriptionPhysique\t$infosPersonnelles\t$email\n";
+  $ligne = "$profession|$lieuResidence|$situationAmoureuse|$descriptionPhysique|$infosPersonnelles|$email\n";
 
   if (!file_exists($cheminFichier)) {
       $fichier = fopen($cheminFichier, 'w');
@@ -225,7 +257,7 @@ function info_additionnel($email, $profession, $lieuResidence, $situationAmoureu
 
   $emailFound = false;
   foreach ($lines as $key => $line) {
-      $fields = explode("\t", $line);
+      $fields = explode("|", $line);
       if ($fields[count($fields) - 1] == $email) {
           $lines[$key] = $ligne; // modifie la ligne si le mail est trouvé
           $emailFound = true;
@@ -252,8 +284,7 @@ function info_aditionnel_tableau($email) {
 
       while (($line = fgets($handle)) !== false) {
 
-          $data = explode("\t", $line);
-
+          $data = explode("|", $line);
           if (trim($data[5]) == $email) {
               $info = [
                   'profession' => trim($data[0]),
@@ -272,4 +303,85 @@ function info_aditionnel_tableau($email) {
       echo "Erreur : impossible d'ouvrir le fichier $file";
   }
   return null;
+}
+
+
+function getLast20Emails() {
+  $lines = file("../Fichiers/logs.txt");
+  $last20Lines = array_slice($lines, -20);
+  $last20Emails = [];
+
+  foreach ($last20Lines as $line) {
+      $parts = explode("|", $line);
+      $last20Emails[] = $parts[0];
+  }
+
+  return $last20Emails;
+}
+
+
+function trouverMotDePasseParEmail($email) {
+
+  $fichier = fopen("../Fichiers/logs.txt", "r");
+  if ($fichier) {
+      while (($ligne = fgets($fichier)) !== false) {
+          list($target_mail, $motDePasse) = explode('|', trim($ligne));
+
+          if ($target_mail == $email) {
+              fclose($fichier);
+              return $motDePasse;
+          }
+      }
+      fclose($fichier);
+  }
+  return null;
+}
+
+
+function calculateEndDate($type) {
+  $date = new DateTime();
+  switch ($type) {
+      case 'monthly':
+          $date->modify('+1 month');
+          break;
+      case 'quarterly':
+          $date->modify('+3 months');
+          break;
+      case 'yearly':
+          $date->modify('+1 year');
+          break;
+      case 'trial':
+          $date->modify('+1 day');
+          break;
+  }
+  return $date->format('Y-m-d');
+}
+
+function updatePremiumStatus($email, $isPremium) {
+  $chemin_fichier = "../Fichiers/premium.txt";
+  $status = $isPremium ? 'premium' : 'non premium';
+
+  if (!file_exists($chemin_fichier)) {
+      file_put_contents($chemin_fichier, "");
+  }
+
+  $lines = file($chemin_fichier, FILE_IGNORE_NEW_LINES);
+  $found = false;
+  $updatedContent = [];
+
+  foreach ($lines as $line) {
+      list($currentEmail, $statu) = explode("|", $line);
+      if ($currentEmail === $email) {
+          $updatedContent[] = "$email|$status";
+          $found = true;
+      } else {
+          $updatedContent[] = $line;
+      }
+  }
+
+  if (!$found) {
+      $updatedContent[] = "$email|$status";
+  }
+
+  file_put_contents($chemin_fichier, implode("\n", $updatedContent));
 }

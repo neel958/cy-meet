@@ -1,3 +1,4 @@
-nael180904@gmail.com	az
-utilisateur1@example.com	az
-riyane@gmail.com	az
+nael180904@gmail.com|az
+na@gmail.com|az
+utilisateur1@example.com|az
+utilisateur2@example.com|az

@@ -23,13 +23,12 @@
 
       if (verifier_email_existe($email)) {
         echo "<script>alert('L\'adresse e-mail est déjà utilisée. Veuillez en choisir une autre.');</script>";
-        header("Refresh: 1; URL=inscription.php"); //redirige apres 1 seocnde vers inscription.php, obligé sinon ca dirige vers connexion.php
-        exit();
+        echo "<script>window.location.href='connexion.php'</script>";
     } 
-    else {
-        EcrireLogs($email, $mdp);
-        enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $type, $numeroEtudiant, $email);
-    }
+        else {
+            EcrireLogs($email, $mdp);
+            enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $type, $numeroEtudiant, $email);
+        }
     }
     $tableau = array("Accueil" => "accueil.php", "Se connecter"=> "connexion.php", "Inscription" => "inscription.php");
     top_bar($tableau);
