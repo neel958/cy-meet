@@ -245,14 +245,14 @@ function updatePassword($email, $newPassword) {
 
 function info_additionnel($email, $profession, $lieuResidence, $situationAmoureuse, $descriptionPhysique, $infosPersonnelles) {
   $cheminFichier = "../Fichiers/additionnel_info.txt";
-  $ligne = "$profession|$lieuResidence|$situationAmoureuse|$descriptionPhysique|$infosPersonnelles|$email\n";
+  $ligne = "$profession|$lieuResidence|$situationAmoureuse|$descriptionPhysique|$infosPersonnelles|$email";
 
   if (!file_exists($cheminFichier)) {
       $fichier = fopen($cheminFichier, 'w');
       fclose($fichier);
   }
 
-  $lines = file($cheminFichier, FILE_IGNORE_NEW_LINES);
+  $lines = file($cheminFichier, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 
   $emailFound = false;
@@ -269,7 +269,7 @@ function info_additionnel($email, $profession, $lieuResidence, $situationAmoureu
       $lines[] = $ligne;
   }
 
-  file_put_contents($cheminFichier, implode("\n", $lines));
+  file_put_contents($cheminFichier, implode("\n", $lines). "\n");
 }
 
 function info_aditionnel_tableau($email) {
@@ -384,4 +384,53 @@ function updatePremiumStatus($email, $isPremium) {
   }
 
   file_put_contents($chemin_fichier, implode("\n", $updatedContent));
+}
+
+function isUserPremium($email) {
+    $filename = "../Fichiers/premium.txt";
+
+
+    $file = fopen($filename, "r");
+    if ($file) {
+        while (($line = fgets($file)) !== false) {  // Lis ligne par ligne
+            list($userEmail, $status) = explode('|', trim($line));  // Sépare l'email de l'adjectif premium
+            if ($userEmail === $email) { // compare l'email visé et l'email de la ligne
+                fclose($file); 
+                return $status === 'premium';  // Retourne vrai si l'utilisateur est premium ($status === 'premium' vaut true si il vaut preimium)
+            }
+        }
+        fclose($file);
+    }
+    return false;
+}
+
+function getMessages($sender_email, $receiver_email) {
+    $filePath = '../Fichiers/dm.txt';
+    $messages = [];
+
+    if (file_exists($filePath)) {
+        $fileContent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); 
+        
+        foreach ($fileContent as $line) {
+            $parts = explode('|', $line);
+            list($sender, $receiver, $timestamp, $message) = $parts;
+            $message = str_replace(array("\r", "\n"), '', $message);
+            if (($sender === $sender_email && $receiver === $receiver_email) || ($sender === $receiver_email && $receiver === $sender_email)) {
+                $messages[] = [
+                    'sender_email' => $sender,
+                    'receiver_email' => $receiver,
+                    'timestamp' => $timestamp,
+                    'message' => $message
+                ];
+            }
+        }
+    }
+
+    return $messages;
+}
+function write_message_fichier($sender_email, $receiver_email, $timestamp, $message ){
+    $filePath = '../Fichiers/dm.txt';
+    $logMessage = $sender_email . "|" . $receiver_email . "|" . $timestamp . "|" . $message . "\n";
+    file_put_contents($filePath, $logMessage, FILE_APPEND | LOCK_EX);   // Lock_ex utile pour eviter des données corrompues ou incomplete
+    header("Location: dm.php?email=" . urlencode($receiver_email) . "&status=success");
 }

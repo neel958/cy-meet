@@ -73,6 +73,6 @@
 
 
 
-    $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Deconnexion" => "deconnexion.php");
+    $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
     top_bar($tableau);
 ?>
