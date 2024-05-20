@@ -452,9 +452,9 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
     }
 
     else if(file_exists($filePath)) {
-        $fileContent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $filecontent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         
-        foreach ($fileContent as $line) {
+        foreach ($filecontent as $line) {
             list($fileSender, $fileReceiver, $fileTimestamp, $fileMessage) = explode("|", $line);
             var_dump($line);
             if ($fileSender == $sender_email && $fileReceiver == $receiver_email && $fileTimestamp == $timestamp && $fileMessage == $message) {
