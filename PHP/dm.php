@@ -34,8 +34,8 @@ session_start();
         echo "<div id='messageBox'>"; 
         foreach ($messages as $message) {
             $messageContent = $message['message'];
-            $class = ($message['sender_email'] == $sender_email ? "sent" : "received");
-            echo "<div class='message $class' data-message='{$messageContent}'>"; 
+            $class = ($message['sender_email'] == $sender_email ? "sent" : "received"); // attribue la classe selon le type de message
+            echo "<div class='message $class' data-message='{$messageContent}'>";       // data-message est un attribut de donnéess, ici on lui donne la valeur du message
             echo "<p>" . $message['message'] . "</p>";
             if ($message['sender_email'] == $sender_email) {
                 echo "<span class='delete_msg' onclick='supp_msg(\"" . $message['timestamp'] . "\", \"" . $sender_email . "\", \"" . $receiver_email . "\", this)'>&#128465;</span>";

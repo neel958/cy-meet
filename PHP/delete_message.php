@@ -14,7 +14,7 @@ $timestamp = $_GET['timestamp'] ?? null;
 $message = $_GET['message'] ?? null;
 
 if (Suppmsg($sender_email, $receiver_email, $timestamp, $message)) {
-    echo "<script>alert('Message supprimé avec succès.');</script>";
+    echo "<script>alert('Message supprimé avec succès');</script>";    //section reseau onglet reponses
 } 
 else {
     echo("<script>alert('Erreur lors de la suppression du message')</script>");

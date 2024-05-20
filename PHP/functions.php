@@ -444,8 +444,6 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
     $filePath = "../Fichiers/dm.txt";
     $new = [];
     $found = false;
-
-
     if (!file_exists($filePath)) {
         $fichier = fopen($filePath, 'w');
         fclose($fichier);
@@ -463,8 +461,7 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
             }
             $new[] = $line;  // si la ligne n'est pas le message à supprimer, alors l'ajouter à $new
         }
-        var_dump($new);
-
+        
         if ($found) {   // si le message a supprimer a été trouver alors on reecrit le fichier
             $mbappe = implode("\n", $new) . (count($new) > 0 ? "\n" : "");  // saut de ligne conditionnel (merci gpt), ca compte le nombre de ligne et si il y en a une, il y a un saut de ligne, si il n'y a pas de ligne (fichier vide) on ne fait rien
             file_put_contents($filePath, $mbappe);         // on ajoute $new (tableau contenant le fichier sans la ligne à reecrire) en separant chaque ligne d'un saut de ligne
