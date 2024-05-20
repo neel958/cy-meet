@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messagerie Privée</title>
     <link rel="stylesheet" href="../css/dm.css" type="text/css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../js/script.js" type="text/javascript"></script>
 </head>
 <body>
     <h1>Messagerie Privée</h1>
+    
     <?php
-        session_start();
         include 'functions.php';
         $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
         top_bar($tableau); 
@@ -27,9 +33,13 @@
         $messages = getMessages($sender_email, $receiver_email);
         echo "<div id='messageBox'>"; 
         foreach ($messages as $message) {
+            $messageContent = $message['message'];
             $class = ($message['sender_email'] == $sender_email ? "sent" : "received");
-            echo "<div class='message $class'>"; 
+            echo "<div class='message $class' data-message='{$messageContent}'>"; 
             echo "<p>" . $message['message'] . "</p>";
+            if ($message['sender_email'] == $sender_email) {
+                echo "<span class='delete_msg' onclick='supp_msg(\"" . $message['timestamp'] . "\", \"" . $sender_email . "\", \"" . $receiver_email . "\", this)'>&#128465;</span>";
+            }
             echo "</div>";
         }
         echo "</div>";

@@ -408,6 +408,11 @@ function getMessages($sender_email, $receiver_email) {
     $filePath = '../Fichiers/dm.txt';
     $messages = [];
 
+    if (!file_exists($filePath)) {
+        $fichier = fopen($filePath, 'w');
+        fclose($fichier);
+    }
+
     if (file_exists($filePath)) {
         $fileContent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); 
         
@@ -433,4 +438,42 @@ function write_message_fichier($sender_email, $receiver_email, $timestamp, $mess
     $logMessage = $sender_email . "|" . $receiver_email . "|" . $timestamp . "|" . $message . "\n";
     file_put_contents($filePath, $logMessage, FILE_APPEND | LOCK_EX);   // Lock_ex utile pour eviter des données corrompues ou incomplete
     header("Location: dm.php?email=" . urlencode($receiver_email) . "&status=success");
+}
+
+function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
+    $filePath = "../Fichiers/dm.txt";
+    $new = [];
+    $found = false;
+
+
+    if (!file_exists($filePath)) {
+        $fichier = fopen($filePath, 'w');
+        fclose($fichier);
+    }
+
+    else if(file_exists($filePath)) {
+        $fileContent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        
+        foreach ($fileContent as $line) {
+            list($fileSender, $fileReceiver, $fileTimestamp, $fileMessage) = explode("|", $line);
+            var_dump($line);
+            if ($fileSender == $sender_email && $fileReceiver == $receiver_email && $fileTimestamp == $timestamp && $fileMessage == $message) {
+                $found = true;
+                continue;   // continue va passer au compteur suivant de foreach, la ligne à supprimer ne sera donc pas ajouté dans $new
+            }
+            $new[] = $line;  // si la ligne n'est pas le message à supprimer, alors l'ajouter à $new
+        }
+        var_dump($new);
+
+        if ($found) {   // si le message a supprimer a été trouver alors on reecrit le fichier
+            $mbappe = implode("\n", $new) . (count($new) > 0 ? "\n" : "");  // saut de ligne conditionnel (merci gpt), ca compte le nombre de ligne et si il y en a une, il y a un saut de ligne, si il n'y a pas de ligne (fichier vide) on ne fait rien
+            file_put_contents($filePath, $mbappe);         // on ajoute $new (tableau contenant le fichier sans la ligne à reecrire) en separant chaque ligne d'un saut de ligne
+            return true;
+        } else {
+
+            return false;  // sinon on  retourne false
+        }
+    }
+
+    return false;
 }

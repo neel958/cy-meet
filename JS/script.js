@@ -48,3 +48,24 @@ function same_password(){
         location.reload(); // actualise la page
     } 
 }
+function supp_msg(timestamp, senderEmail, receiverEmail, element) {
+    var messageContent = $(element).closest('.message').data('message');
+    if (confirm('Voulez-vous vraiment supprimer ce message ?')) {
+        $.ajax({
+            url: "../PHP/delete_message.php",
+            type: "GET",
+            data: {
+                timestamp: timestamp,
+                sender_email: senderEmail,
+                receiver_email: receiverEmail,
+                message: messageContent
+            },
+            success: function() {
+                $(element).closest('.message').fadeOut(1000, function() { $(this).remove(); });     // reduit l'opacité sur une seconde afin d'ajouter un effet visuelle
+            },
+            error: function() {
+                console.error('Erreur lors de la suppression du message.');
+            }
+        });
+    }
+}

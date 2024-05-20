@@ -15,7 +15,7 @@ body {
 }
 
 .message {
-    padding: 5px;
+    padding: 20px;
     margin-bottom: 10px;
     border-radius: 10px;
     overflow-wrap: break-word;
@@ -100,3 +100,13 @@ input[type="submit"]:hover {
     font-weight: bold;
     line-height: 2.5;
   }
+
+  .delete_msg {
+    visibility: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.message:hover .delete_msg {
+    visibility: visible;
+}
