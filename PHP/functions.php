@@ -454,14 +454,13 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
         
         foreach ($filecontent as $line) {
             list($fileSender, $fileReceiver, $fileTimestamp, $fileMessage) = explode("|", $line);
-            var_dump($line);
             if ($fileSender == $sender_email && $fileReceiver == $receiver_email && $fileTimestamp == $timestamp && $fileMessage == $message) {
                 $found = true;
                 continue;   // continue va passer au compteur suivant de foreach, la ligne à supprimer ne sera donc pas ajouté dans $new
             }
             $new[] = $line;  // si la ligne n'est pas le message à supprimer, alors l'ajouter à $new
         }
-        
+
         if ($found) {   // si le message a supprimer a été trouver alors on reecrit le fichier
             $mbappe = implode("\n", $new) . (count($new) > 0 ? "\n" : "");  // saut de ligne conditionnel (merci gpt), ca compte le nombre de ligne et si il y en a une, il y a un saut de ligne, si il n'y a pas de ligne (fichier vide) on ne fait rien
             file_put_contents($filePath, $mbappe);         // on ajoute $new (tableau contenant le fichier sans la ligne à reecrire) en separant chaque ligne d'un saut de ligne

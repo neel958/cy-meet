@@ -33,12 +33,15 @@ session_start();
         $messages = getMessages($sender_email, $receiver_email);
         echo "<div id='messageBox'>"; 
         foreach ($messages as $message) {
-            $messageContent = $message['message'];
+            $timestamp = htmlspecialchars($message['timestamp'], ENT_QUOTES);           // htmlspecialchars et ent_quotes pour eviter les problèmes avec les apostrophes, sinon le message ne se supprime pas
+            $senderEmail = htmlspecialchars($sender_email, ENT_QUOTES);
+            $receiverEmail = htmlspecialchars($receiver_email, ENT_QUOTES);
+            $messageContent = htmlspecialchars($message['message'], ENT_QUOTES);
             $class = ($message['sender_email'] == $sender_email ? "sent" : "received"); // attribue la classe selon le type de message
             echo "<div class='message $class' data-message='{$messageContent}'>";       // data-message est un attribut de donnéess, ici on lui donne la valeur du message
             echo "<p>" . $message['message'] . "</p>";
             if ($message['sender_email'] == $sender_email) {
-                echo "<span class='delete_msg' onclick='supp_msg(\"" . $message['timestamp'] . "\", \"" . $sender_email . "\", \"" . $receiver_email . "\", this)'>&#128465;</span>";
+                echo "<div class='delete_msg' onclick='supp_msg(\"" . $timestamp . "\", \"" . $senderEmail . "\", \"" . $receiverEmail . "\", this)'>&#128465;</div>";
             }
             echo "</div>";
         }
