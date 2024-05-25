@@ -10,7 +10,7 @@
     session_start();
     include 'functions.php';
     if (!isset($_SESSION['user_email'])) {
-        echo "<script>alert('Vous n'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+        echo "<script>alert('Vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
         exit();
     }
 

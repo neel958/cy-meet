@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Europe/Paris');
 function top_bar($tableau){
     echo("<div class='top-bar'>
     <img src=\"../Images\CY Cergy Paris Universite_coul.jpg\" class = \"logo\">
@@ -138,21 +138,18 @@ function enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $type, $nu
     $dateFormatted = date("d-m-Y", strtotime($dateNaissance));
     $ligne = $nom . "|" . $prenom . "|" . $dateFormatted . "|" . $type . "|" . $numeroEtudiant . "|" . $email . "\n";
 
-    // Vérifier si le fichier existe, sinon le créer
     if (!file_exists($cheminFichier)) {
         $fichier = fopen($cheminFichier, 'w'); // Création du fichier si non existant
         fclose($fichier);
     }
 
-    // Récupérer le contenu existant pour vérifier si les données sont déjà présentes
     $contenuFichier = file_get_contents($cheminFichier);
     if (strpos($contenuFichier, $ligne) !== false) {
         // Si les données sont déjà présentes, ne rien faire
         return;
     }
 
-    // Si les données ne sont pas encore dans le fichier, les ajouter
-    file_put_contents($cheminFichier, $ligne, FILE_APPEND);
+    file_put_contents($cheminFichier, $ligne, FILE_APPEND);    // Si les données ne sont pas encore dans le fichier, les ajouter
 }
 
 
@@ -371,17 +368,16 @@ function calculateEndDate($type) {
           $date->modify('+1 year');
           break;
       case 'trial':
-          $date->modify('+1 day');
+          $date->modify('+2 minutes');
           break;
   }
-  return $date->format('Y-m-d');
+  return $date->format('Y-m-d H:i:s');
 }
 
-function updatePremiumStatus($email, $isPremium) {
+function updatePremiumStatus($email, $isPremium, $endDate = null) {
     $email = pasdebarre($email);
     $chemin_fichier = "../Fichiers/premium.txt";
     $status = $isPremium ? 'premium' : 'non premium';
-
     if (!file_exists($chemin_fichier)) {
         file_put_contents($chemin_fichier, "");
     }
@@ -391,9 +387,10 @@ function updatePremiumStatus($email, $isPremium) {
     $updatedContent = [];
 
     foreach ($lines as $line) {
-        list($currentEmail, $statu) = explode("|", $line);
-        if ($currentEmail === $email) {
-            $updatedContent[] = "$email|$status";
+        list($mail_actuelle, $statut_actuelle, $date_actuelle) = explode("|", $line);
+        if ($mail_actuelle === $email) {
+            $newEndDate = $endDate ? $endDate : $date_actuelle;
+            $updatedContent[] = "$email|$status|$newEndDate";
             $found = true;
         } else {
             $updatedContent[] = $line;
@@ -401,11 +398,33 @@ function updatePremiumStatus($email, $isPremium) {
     }
 
     if (!$found) {
-        $updatedContent[] = "$email|$status";
+        $newEndDate = $endDate ? $endDate : date('Y-m-d H:i:s');
+        $updatedContent[] = "$email|$status|$newEndDate";
     }
 
     file_put_contents($chemin_fichier, implode("\n", $updatedContent));
 }
+
+function checkpremium($email) {
+    $filename = "../Fichiers/premium.txt";
+    $date = new DateTime();
+    $lines = file($filename, FILE_IGNORE_NEW_LINES);
+    foreach ($lines as $line) {
+        list($userEmail, $status, $endDate) = explode("|", $line);
+        if ($userEmail === $email) {
+            $endDateObj = new DateTime($endDate);   // creer un objet pour la date d'expriation
+            if ($date > $endDateObj) {              // compare la date actuelle avec la date de fin de l'abonnement
+                updatePremiumStatus($email, false, $endDateObj->format('Y-m-d H:i:s')); // si la date d'abonnement de l'utilisateur a expiré, modifier son statut dans la base de donnée
+                return false;
+            }
+            return $status === 'premium';
+        }
+    }
+    return false;
+}
+
+
+
 
 function isUserPremium($email) {
     $filename = "../Fichiers/premium.txt";

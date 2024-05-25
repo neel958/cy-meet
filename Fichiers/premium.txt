@@ -1,4 +1,2 @@
-utilisateur1@example.com|premium
-nael180904@gmail.com|premium
-na@gmail.com|premium
-utilisateur2@example.com|premium
+utilisateur1@example.com|premium|2024-05-25 18:06:10
+nael180904@gmail.com|non premium|2024-04-25 18:14:09

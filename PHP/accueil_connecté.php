@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +15,19 @@
 <div class="background_image"></div>
     <h1 class = "titre">Cy meet</h1>
 <?php 
+
     include 'functions.php';
+    if (!isset($_SESSION['user_email'])) {
+        echo "<script>alert('Vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+        exit();
+    }
     $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
     top_bar($tableau); 
 
 
-    session_start();
+
     if (isset($_SESSION['user_email'])) {
         $email = $_SESSION['user_email'];
-
         $vingt_dernier_mail = getLast20Emails();
         $tableau_final = [];
 

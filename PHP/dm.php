@@ -17,17 +17,20 @@ session_start();
     
     <?php
         include 'functions.php';
-        $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
-        top_bar($tableau); 
-        
         if (!isset($_SESSION['user_email'])) {
-            echo "<script>alert('Vous n'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+            echo "<script>alert('Vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
             exit();
         }
 
         $sender_email = $_SESSION['user_email'];
-        $receiver_email = $_GET['email'] ?? ''; 
+        $receiver_email = $_GET['email'] ?? '';
+        if (!checkPremium($sender_email)) {
+            echo "<script>alert('Votre abonnement a expiré ou vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+            exit();
+        }
 
+        $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
+        top_bar($tableau);
         echo "<h2>Conversation avec " . $receiver_email . "</h2>"; 
 
         $messages = getMessages($sender_email, $receiver_email);
@@ -47,11 +50,11 @@ session_start();
         }
         echo "</div>";
 
-        echo "<form action='send_message.php' method='post'>";
-        echo "<input type='hidden' name='receiver_email' value='" . $receiver_email . "'>";
-        echo "<textarea name='message' required placeholder='Écrivez votre message ici...'></textarea><br>";
-        echo "<input type='submit' value='Envoyer'>";
-        echo "</form>";
+        echo "<form action='send_message.php' method='post'>
+        <input type='hidden' name='receiver_email' value='" . $receiver_email . "'>
+        <textarea name='message' required placeholder='Écrivez votre message ici...'></textarea><br>
+        <input type='submit' value='Envoyer'>
+        </form>";
     ?>
 
 </body>
