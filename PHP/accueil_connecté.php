@@ -59,7 +59,11 @@
         </div>
 
 </div>
-<a href="abonnement.php" class="subscribe-button">Abonnements</a>
+    <?php
+    if(!isUserPremium($email)){
+        echo('<a href="abonnement.php" class="subscribe-button">Abonnements</a>');
+    }
+    ?>
 </body>
 </html>
 

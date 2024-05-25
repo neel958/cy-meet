@@ -66,7 +66,9 @@ function formulaire_connexion(){
         </div>");
 }
 function EcrireLogs($email, $mdp) {
-  if (!file_exists('../Fichiers/logs.txt')) {
+    $email = pasdebarre($email);
+    $mdp = pasdebarre($mdp);
+    if (!file_exists('../Fichiers/logs.txt')) {
     $fichier = fopen('../Fichiers/logs.txt', 'w');
     fclose($fichier);
 }
@@ -125,27 +127,32 @@ function verifier_email_existe($email) {
   }
 }
 
-function enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $sexe, $numeroEtudiant, $email) {
-  $cheminFichier = "../Fichiers/data.txt";
+function enregistrerDonneesUtilisateur($nom, $prenom, $dateNaissance, $type, $numeroEtudiant, $email) {
+    $nom = pasdebarre($nom);
+    $prenom = pasdebarre($prenom);
+    $type = pasdebarre($type);
+    $numeroEtudiant = pasdebarre($numeroEtudiant);
+    $email = pasdebarre($email);
+    $cheminFichier = "../Fichiers/data.txt";
 
-  $dateFormatted = date("d-m-Y", strtotime($dateNaissance));
-  $ligne = $nom . "|" . $prenom . "|" . $dateFormatted . "|" . $sexe . "|" . $numeroEtudiant . "|" . $email . "\n";
+    $dateFormatted = date("d-m-Y", strtotime($dateNaissance));
+    $ligne = $nom . "|" . $prenom . "|" . $dateFormatted . "|" . $type . "|" . $numeroEtudiant . "|" . $email . "\n";
 
-  // Vérifier si le fichier existe, sinon le créer
-  if (!file_exists($cheminFichier)) {
-      $fichier = fopen($cheminFichier, 'w'); // Création du fichier si non existant
-      fclose($fichier);
-  }
+    // Vérifier si le fichier existe, sinon le créer
+    if (!file_exists($cheminFichier)) {
+        $fichier = fopen($cheminFichier, 'w'); // Création du fichier si non existant
+        fclose($fichier);
+    }
 
-  // Récupérer le contenu existant pour vérifier si les données sont déjà présentes
-  $contenuFichier = file_get_contents($cheminFichier);
-  if (strpos($contenuFichier, $ligne) !== false) {
-      // Si les données sont déjà présentes, ne rien faire
-      return;
-  }
+    // Récupérer le contenu existant pour vérifier si les données sont déjà présentes
+    $contenuFichier = file_get_contents($cheminFichier);
+    if (strpos($contenuFichier, $ligne) !== false) {
+        // Si les données sont déjà présentes, ne rien faire
+        return;
+    }
 
-  // Si les données ne sont pas encore dans le fichier, les ajouter
-  file_put_contents($cheminFichier, $ligne, FILE_APPEND);
+    // Si les données ne sont pas encore dans le fichier, les ajouter
+    file_put_contents($cheminFichier, $ligne, FILE_APPEND);
 }
 
 
@@ -176,100 +183,113 @@ function info_mail($email) {
 
 
 function updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtudiant) {
-  $fichier = "../Fichiers/data.txt";
-  $tempFile = "../Fichiers/temp.txt";
-  $handle = fopen($fichier, 'r');
-  $tempHandle = fopen($tempFile, 'w');
+    $email = pasdebarre($email);
+    $nom = pasdebarre($nom);
+    $prenom = pasdebarre($prenom);
+    $type = pasdebarre($type);
+    $numeroEtudiant = pasdebarre($numeroEtudiant);
+    $fichier = "../Fichiers/data.txt";
+    $tempFile = "../Fichiers/temp.txt";
+    $handle = fopen($fichier, 'r');
+    $tempHandle = fopen($tempFile, 'w');
 
-  if ($handle && $tempHandle) {
-      while (($line = fgets($handle)) !== false) {
-          $data = explode("|", $line);
-          if (trim($data[5]) == $email) {
+    if ($handle && $tempHandle) {
+        while (($line = fgets($handle)) !== false) {
+            $data = explode("|", $line);
+            if (trim($data[5]) == $email) {
 
-              $newLine = "$nom|$prenom|$dateNaissance|$type|$numeroEtudiant|$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
-              fputs($tempHandle, $newLine);
-          } else {
+                $newLine = "$nom|$prenom|$dateNaissance|$type|$numeroEtudiant|$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
+                fputs($tempHandle, $newLine);
+            } else {
 
-              fputs($tempHandle, $line);
-          }
-      }
-      fclose($handle);
-      fclose($tempHandle);
+                fputs($tempHandle, $line);
+            }
+        }
+        fclose($handle);
+        fclose($tempHandle);
 
 
-      if (!rename($tempFile, $fichier)) {
-          echo "Erreur lors de la mise à jour des informations.";
-          return false;
-      }
-      return true;
-  } else {
-      if ($handle) fclose($handle);
-      if ($tempHandle) fclose($tempHandle);
-      echo "Erreur : impossible d'ouvrir le fichier.";
-      return false;
-  }
+        if (!rename($tempFile, $fichier)) {
+            echo "Erreur lors de la mise à jour des informations.";
+            return false;
+        }
+        return true;
+    } else {
+        if ($handle) fclose($handle);
+        if ($tempHandle) fclose($tempHandle);
+        echo "Erreur : impossible d'ouvrir le fichier.";
+        return false;
+    }
 }
 
 
 function updatePassword($email, $newPassword) {
-  $fichier = "../Fichiers/logs.txt";
-  $tempFile = "../Fichiers/temp.txt";
-  $handle = fopen($fichier, 'r');
-  $tempHandle = fopen($tempFile, 'w');
+    $email = pasdebarre($email);
+    $newPassword = pasdebarre($newPassword);
+    $fichier = "../Fichiers/logs.txt";
+    $tempFile = "../Fichiers/temp.txt";
+    $handle = fopen($fichier, 'r');
+    $tempHandle = fopen($tempFile, 'w');
 
-  if ($handle && $tempHandle) {
-      while (($line = fgets($handle)) !== false) {
-          $data = explode("|", $line);
-          if (trim($data[0]) == $email) {
-              $newLine = "$email|$newPassword\n";
-              fputs($tempHandle, $newLine);
-          } else {
-              fputs($tempHandle, $line); 
-          }
-      }
-      fclose($handle);
-      fclose($tempHandle);
+    if ($handle && $tempHandle) {
+        while (($line = fgets($handle)) !== false) {
+            $data = explode("|", $line);
+            if (trim($data[0]) == $email) {
+                $newLine = "$email|$newPassword\n";
+                fputs($tempHandle, $newLine);
+            } else {
+                fputs($tempHandle, $line); 
+            }
+        }
+        fclose($handle);
+        fclose($tempHandle);
 
-      if (!rename($tempFile, $fichier)) {
-          echo "Erreur lors de la mise à jour du mot de passe.";
-          return false;
-      }
-      return true;
-  } else {
-      if ($handle) fclose($handle);
-      if ($tempHandle) fclose($tempHandle);
-      echo "Erreur : impossible d'ouvrir le fichier.";
-      return false;
-  }
+        if (!rename($tempFile, $fichier)) {
+            echo "Erreur lors de la mise à jour du mot de passe.";
+            return false;
+        }
+        return true;
+    } else {
+        if ($handle) fclose($handle);
+        if ($tempHandle) fclose($tempHandle);
+        echo "Erreur : impossible d'ouvrir le fichier.";
+        return false;
+    }
 }
 
 function info_additionnel($email, $profession, $lieuResidence, $situationAmoureuse, $descriptionPhysique, $infosPersonnelles) {
-  $cheminFichier = "../Fichiers/additionnel_info.txt";
-  $ligne = "$profession|$lieuResidence|$situationAmoureuse|$descriptionPhysique|$infosPersonnelles|$email";
+    $email = pasdebarre($email);
+    $profession = pasdebarre($profession);
+    $lieuResidence = pasdebarre($lieuResidence);
+    $situationAmoureuse = pasdebarre($situationAmoureuse);
+    $descriptionPhysique = pasdebarre($descriptionPhysique);
+    $infosPersonnelles = pasdebarre($infosPersonnelles);
+    $cheminFichier = "../Fichiers/additionnel_info.txt";
+    $ligne = "$profession|$lieuResidence|$situationAmoureuse|$descriptionPhysique|$infosPersonnelles|$email";
 
-  if (!file_exists($cheminFichier)) {
-      $fichier = fopen($cheminFichier, 'w');
-      fclose($fichier);
-  }
+    if (!file_exists($cheminFichier)) {
+        $fichier = fopen($cheminFichier, 'w');
+        fclose($fichier);
+    }
 
-  $lines = file($cheminFichier, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file($cheminFichier, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 
-  $emailFound = false;
-  foreach ($lines as $key => $line) {
-      $fields = explode("|", $line);
-      if ($fields[count($fields) - 1] == $email) {
-          $lines[$key] = $ligne; // modifie la ligne si le mail est trouvé
-          $emailFound = true;
-          break;
-      }
-  }
+    $emailFound = false;
+    foreach ($lines as $key => $line) {
+        $fields = explode("|", $line);
+        if ($fields[count($fields) - 1] == $email) {
+            $lines[$key] = $ligne; // modifie la ligne si le mail est trouvé
+            $emailFound = true;
+            break;
+        }
+    }
 
-  if (!$emailFound) { // sinon on ajoute simplement la nouvelle ligne
-      $lines[] = $ligne;
-  }
+    if (!$emailFound) { // sinon on ajoute simplement la nouvelle ligne
+        $lines[] = $ligne;
+    }
 
-  file_put_contents($cheminFichier, implode("\n", $lines). "\n");
+    file_put_contents($cheminFichier, implode("\n", $lines). "\n");
 }
 
 function info_aditionnel_tableau($email) {
@@ -358,38 +378,37 @@ function calculateEndDate($type) {
 }
 
 function updatePremiumStatus($email, $isPremium) {
-  $chemin_fichier = "../Fichiers/premium.txt";
-  $status = $isPremium ? 'premium' : 'non premium';
+    $email = pasdebarre($email);
+    $chemin_fichier = "../Fichiers/premium.txt";
+    $status = $isPremium ? 'premium' : 'non premium';
 
-  if (!file_exists($chemin_fichier)) {
-      file_put_contents($chemin_fichier, "");
-  }
+    if (!file_exists($chemin_fichier)) {
+        file_put_contents($chemin_fichier, "");
+    }
 
-  $lines = file($chemin_fichier, FILE_IGNORE_NEW_LINES);
-  $found = false;
-  $updatedContent = [];
+    $lines = file($chemin_fichier, FILE_IGNORE_NEW_LINES);
+    $found = false;
+    $updatedContent = [];
 
-  foreach ($lines as $line) {
-      list($currentEmail, $statu) = explode("|", $line);
-      if ($currentEmail === $email) {
-          $updatedContent[] = "$email|$status";
-          $found = true;
-      } else {
-          $updatedContent[] = $line;
-      }
-  }
+    foreach ($lines as $line) {
+        list($currentEmail, $statu) = explode("|", $line);
+        if ($currentEmail === $email) {
+            $updatedContent[] = "$email|$status";
+            $found = true;
+        } else {
+            $updatedContent[] = $line;
+        }
+    }
 
-  if (!$found) {
-      $updatedContent[] = "$email|$status";
-  }
+    if (!$found) {
+        $updatedContent[] = "$email|$status";
+    }
 
-  file_put_contents($chemin_fichier, implode("\n", $updatedContent));
+    file_put_contents($chemin_fichier, implode("\n", $updatedContent));
 }
 
 function isUserPremium($email) {
     $filename = "../Fichiers/premium.txt";
-
-
     $file = fopen($filename, "r");
     if ($file) {
         while (($line = fgets($file)) !== false) {  // Lis ligne par ligne
@@ -434,6 +453,10 @@ function getMessages($sender_email, $receiver_email) {
     return $messages;
 }
 function write_message_fichier($sender_email, $receiver_email, $timestamp, $message ){
+    $sender_email = pasdebarre($sender_email);
+    $receiver_email = pasdebarre($receiver_email);
+    $timestamp = pasdebarre($timestamp);
+    $message = pasdebarre($message);
     $filePath = '../Fichiers/dm.txt';
     $logMessage = $sender_email . "|" . $receiver_email . "|" . $timestamp . "|" . $message . "\n";
     file_put_contents($filePath, $logMessage, FILE_APPEND | LOCK_EX);   // Lock_ex utile pour eviter des données corrompues ou incomplete
@@ -441,6 +464,10 @@ function write_message_fichier($sender_email, $receiver_email, $timestamp, $mess
 }
 
 function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
+    $sender_email = pasdebarre($sender_email);
+    $receiver_email = pasdebarre($receiver_email);
+    $timestamp = pasdebarre($timestamp);
+    $message = pasdebarre($message);
     $filePath = "../Fichiers/dm.txt";
     $new = [];
     $found = false;
@@ -462,7 +489,7 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
         }
 
         if ($found) {   // si le message a supprimer a été trouver alors on reecrit le fichier
-            $mbappe = implode("\n", $new) . (count($new) > 0 ? "\n" : "");  // saut de ligne conditionnel (merci gpt), ca compte le nombre de ligne et si il y en a une, il y a un saut de ligne, si il n'y a pas de ligne (fichier vide) on ne fait rien
+            $mbappe = implode("\n", $new) . (count($new) > 0 ? "\n" : "");  // saut de ligne conditionnel : ca compte le nombre de ligne et si il y en a une, il y a un saut de ligne, si il n'y a pas de ligne (fichier vide) on ne fait rien
             file_put_contents($filePath, $mbappe);         // on ajoute $new (tableau contenant le fichier sans la ligne à reecrire) en separant chaque ligne d'un saut de ligne
             return true;
         } else {
@@ -472,4 +499,9 @@ function Suppmsg($sender_email, $receiver_email, $timestamp, $message) {
     }
 
     return false;
+}
+
+
+function pasdebarre($str){
+    return str_replace("|", "l", $str);     // remplace les | par des L minuscule pour eviter tout probleme dans les données (le séparateur etant |)
 }

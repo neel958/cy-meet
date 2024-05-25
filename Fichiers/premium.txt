@@ -1,3 +1,4 @@
 utilisateur1@example.com|premium
 nael180904@gmail.com|premium
 na@gmail.com|premium
+utilisateur2@example.com|premium
