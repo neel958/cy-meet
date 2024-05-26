@@ -55,8 +55,6 @@
             echo "<br>";
             echo "Informations personnelles : <textarea name='infosPersonnelles' placeholder='Informations personnelles'>" . htmlspecialchars($userbonus['infosPersonnelles'] ?? '', ENT_QUOTES) . "</textarea><br>";
             echo "<br>";
-            echo "Photo : <input type='file' name='photo' multiple><br>";
-            echo "<br>";
             echo "<input type='submit' value='Mettre à jour'>";
             echo "</form>";
         }
