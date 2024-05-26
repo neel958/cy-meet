@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/recherche_profil.css" type="text/css">
-    <title>Recherche mail</title>
+    <title>Recherche pour distcuer</title>
 </head>
 <body>
 <?php
     session_start();
     include 'functions.php';
     if (!isset($_SESSION['user_email'])) {
-        echo "<script>alert('Vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+        echo "<script>alert(\"Vous n'êtes pas connecté.\"); window.location.href = 'connexion.php';</script>";
         exit();
     }
     if (!checkPremium($_SESSION['user_email'])) {
@@ -30,7 +30,7 @@
     foreach ($utilisateurs as $utilisateur) {
         if (strpos(strtolower($utilisateur['email']), strtolower($mail_target)) !== false) {
             echo "<div><p><a href='dm.php?email=" . urlencode($utilisateur['email']) . "'>" . $utilisateur['email'] . "</a></p></div>";
-            $found = true;
+            $found = true;      // affiche les mails ayant comme caractere ce que l'utilisateur aura rentrer dans la barre de recherche                
         }
     }
     if (!$found) {

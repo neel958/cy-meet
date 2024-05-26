@@ -23,38 +23,28 @@ session_start();
     }
     $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
     top_bar($tableau); 
-
-
-
-    if (isset($_SESSION['user_email'])) {
-        $email = $_SESSION['user_email'];
-        $vingt_dernier_mail = getLast20Emails();
-        $tableau_final = [];
-
-        foreach ($vingt_dernier_mail as $mail) {
-
-            $basicInfo = info_mail($mail);
-            $additionalInfo = info_aditionnel_tableau($mail);
-            if ($basicInfo) {
-                $userInfo = $basicInfo;
-                if ($additionalInfo) {
-                    $userInfo = array_merge($basicInfo, $additionalInfo);
-                }
-                $tableau_final[] = $userInfo;
+    $email = $_SESSION['user_email'];
+    $vingt_dernier_mail = getLast20Emails();
+    $tableau_final = [];
+    foreach ($vingt_dernier_mail as $mail) {
+        $basicInfo = info_mail($mail);
+        $additionalInfo = info_aditionnel_tableau($mail);
+        if ($basicInfo) {
+            $userInfo = $basicInfo;
+            if ($additionalInfo) {
+                $userInfo = array_merge($basicInfo, $additionalInfo);   
             }
+            $tableau_final[] = $userInfo;
         }
-        $tableau_final = array_reverse($tableau_final);
     }
-        ?>
+    $tableau_final = array_reverse($tableau_final);
+?>
     <div class="list-container">
         <h2>Derniers inscrits</h2>
         <ul>
         <?php foreach ($tableau_final as $userInfo): ?>
             <li>
                 <?= $userInfo['nom'] ?> <?= $userInfo['prenom'] ?> - Date de naissance: <?= $userInfo['dateNaissance'] ?> - Type: <?= $userInfo['type'] ?> - Email: <?= $userInfo['email'] ?>
-                <?php if (isset($userInfo['profession'])): ?>
-                    
-                <?php endif; ?>
             </li>
         <?php endforeach; ?>
         </ul>

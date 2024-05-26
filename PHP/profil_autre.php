@@ -25,8 +25,8 @@ top_bar($tableau);
 
 if ($userInfo) {
     echo "<div class='profile-container'>";
-    echo "<h1>Profil de " . htmlspecialchars($userInfo['prenom']) . " " . htmlspecialchars($userInfo['nom']) . "</h1>";
-    echo "<p>Nom : " . htmlspecialchars($userInfo['nom']) . "</p>";
+    echo "<h1>Profil de " . htmlspecialchars($userInfo['prenom']) . " " . htmlspecialchars($userInfo['nom']) . "</h1>"; // utilisation de htmlspecialchars pour eviter 
+    echo "<p>Nom : " . htmlspecialchars($userInfo['nom']) . "</p>";                                                     // les problèmes de caractères spéciaux
     echo "<p>Prénom : " . htmlspecialchars($userInfo['prenom']) . "</p>";
     echo "<p>Date de Naissance : " . htmlspecialchars($userInfo['dateNaissance']) . "</p>";
     echo "<p>Type : " . htmlspecialchars($userInfo['type']) . "</p>";

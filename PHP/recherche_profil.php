@@ -26,7 +26,7 @@ $found = false;
 foreach ($utilisateurs as $utilisateur) {
     if (strpos(strtolower($utilisateur['email']), strtolower($mail_target)) !== false) {
         echo "<div><p><a href='profil_autre.php?email=" . urlencode($utilisateur['email']) . "'>" . $utilisateur['email'] . "</a></p></div>";
-        $found = true;        // affiche les mails ayant comme caracterece que l'utilisateur aura rentrer dans la barre de recherche                                                                                                                     
+        $found = true;        // affiche les mails ayant comme caractere ce que l'utilisateur aura rentrer dans la barre de recherche                                                                                                                     
     }
 }
 
