@@ -18,7 +18,7 @@
         exit();
     }
     if (!checkPremium($_SESSION['user_email'])) {
-        echo "<script>alert('Votre abonnement a expiré'); window.location.href = 'abonnement.php';</script>";
+        echo "<script>alert(\"Votre abonnement a expiré ou vous n'êtes pas un utilisateur premium\"); window.location.href = 'abonnement.php';</script>";
         exit();
     }
     $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");

@@ -3,7 +3,7 @@ include 'functions.php';
 session_start();
 if (isset($_POST['nom'], $_POST['prenom'], $_POST['dateNaissance'], $_POST['type'], $_POST['numeroEtudiant']) && isset($_SESSION['user_email'])) {
 
-    $email = $_SESSION['user_email'];
+    $email = $_SESSION['user_email'];       // email non modifiable donc pas besoin de recuperer sa valeur
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
     $dateNaissance = $_POST['dateNaissance'];

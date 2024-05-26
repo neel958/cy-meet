@@ -31,7 +31,7 @@
             echo "<br>";
             echo "Prénom : <input type='text' name='prenom' value='" . htmlspecialchars($userInfo['prenom'], ENT_QUOTES) . "' placeholder='Prénom' required><br>";
             echo "<br>";
-            echo "Email : <input type='text' name='emaile' value='" . htmlspecialchars($email, ENT_QUOTES) . "' placeholder='Email' required><br>";
+            echo "Email : <input type='text' name='email' value='" . htmlspecialchars($email, ENT_QUOTES) . "' placeholder='Email' required><br>";
             echo "<br>";
             echo "Mot de passe : <input type='text' name='motdepasse' value='" . htmlspecialchars($mdp, ENT_QUOTES) . "' placeholder='Mot de passe' required><br>";
             echo "<br>";

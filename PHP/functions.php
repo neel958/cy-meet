@@ -69,16 +69,16 @@ function EcrireLogs($email, $mdp) {
     $email = pasdebarre($email);
     $mdp = pasdebarre($mdp);
     if (!file_exists('../Fichiers/logs.txt')) {
-    $fichier = fopen('../Fichiers/logs.txt', 'w');
-    fclose($fichier);
-}
-  $emplacement_fichier = '../Fichiers/logs.txt';
-  $donnees = $email."|".$mdp."\n";
-  $contenuFichier = file_get_contents($emplacement_fichier); // $contenu_fichier prend les données du fichier logs.txt
-  if (strpos($contenuFichier, $donnees) !== false) { // cherche $donnes dans $contenu_fichier, si != false (existe) alors ne rien ecrire
-      return;
-  }
-  file_put_contents($emplacement_fichier, $donnees, FILE_APPEND); // si $donnees n'existe pas dans $contenu_fichier, alors ecrire $donnees dans $contenu_fichier (à la fin du fichier d'où le file_append)
+        $fichier = fopen('../Fichiers/logs.txt', 'w');
+        fclose($fichier);
+    }
+    $emplacement_fichier = '../Fichiers/logs.txt';
+    $donnees = $email."|".$mdp."\n";
+    $contenuFichier = file_get_contents($emplacement_fichier); // $contenu_fichier prend les données du fichier logs.txt
+    if (strpos($contenuFichier, $donnees) !== false) { // cherche $donnes dans $contenu_fichier, si != false (existe) alors ne rien ecrire
+        return;
+    }
+    file_put_contents($emplacement_fichier, $donnees, FILE_APPEND); // si $donnees n'existe pas dans $contenu_fichier, alors ecrire $donnees dans $contenu_fichier (à la fin du fichier d'où le file_append)
 }
 
 function lire_fichier_public_user($fichier) {
@@ -102,11 +102,10 @@ function verifie_identifiant(){
   $tableau = lire_fichier_public_user('../Fichiers/logs.txt');
   $email = $_POST["email"];
   $mot_de_passe = $_POST["motDePasse"]; // Nom du champ dans le formulaire
-  $trouve = false;
   foreach ($tableau as $utilisateur) {
       if ($utilisateur["email"] == $email && $utilisateur["mot_de_passe"] == $mot_de_passe) {
           $_SESSION['user_email'] = $email;
-          header("Location: accueil_connecté.php");  // Redirection vers la page d'accueil connecté
+          header("Location: accueil_connecté.php");  // Redirection vers la page d'accueil connecté si la verification est correcte
           exit();
       }
   }
@@ -198,7 +197,6 @@ function updateUserInfo($email, $nom, $prenom, $dateNaissance, $type, $numeroEtu
                 $newLine = "$nom|$prenom|$dateNaissance|$type|$numeroEtudiant|$email\n"; // creer  la nouvelle ligne avec les informations mise à jour
                 fputs($tempHandle, $newLine);
             } else {
-
                 fputs($tempHandle, $line);
             }
         }
@@ -274,8 +272,8 @@ function info_additionnel($email, $profession, $lieuResidence, $situationAmoureu
 
     $emailFound = false;
     foreach ($lines as $key => $line) {
-        $fields = explode("|", $line);
-        if ($fields[count($fields) - 1] == $email) {
+        $neymar = explode("|", $line);
+        if ($neymar[count($neymar) - 1] == $email) {
             $lines[$key] = $ligne; // modifie la ligne si le mail est trouvé
             $emailFound = true;
             break;
@@ -430,11 +428,11 @@ function isUserPremium($email) {
     $filename = "../Fichiers/premium.txt";
     $file = fopen($filename, "r");
     if ($file) {
-        while (($line = fgets($file)) !== false) {  // Lis ligne par ligne
+        while (($line = fgets($file)) !== false) {                  // Lis ligne par ligne
             list($userEmail, $status) = explode('|', trim($line));  // Sépare l'email de l'adjectif premium
-            if ($userEmail === $email) { // compare l'email visé et l'email de la ligne
+            if ($userEmail === $email) {                            // compare l'email visé et l'email de la ligne
                 fclose($file); 
-                return $status === 'premium';  // Retourne vrai si l'utilisateur est premium ($status === 'premium' vaut true si il vaut preimium)
+                return $status === 'premium';                       // Retourne vrai si l'utilisateur est premium ($status === 'premium' vaut true si il vaut preimium)
             }
         }
         fclose($file);
@@ -450,14 +448,12 @@ function getMessages($sender_email, $receiver_email) {
         $fichier = fopen($filePath, 'w');
         fclose($fichier);
     }
-
     if (file_exists($filePath)) {
         $fileContent = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); 
-        
         foreach ($fileContent as $line) {
             $parts = explode('|', $line);
             list($sender, $receiver, $timestamp, $message) = $parts;
-            $message = str_replace(array("\r", "\n"), '', $message);
+            $message = str_replace(array("\r", "\n"), '', $message);    // enleve les sauts de lignes et les remplace par un vide
             if (($sender === $sender_email && $receiver === $receiver_email) || ($sender === $receiver_email && $receiver === $sender_email)) {
                 $messages[] = [
                     'sender_email' => $sender,

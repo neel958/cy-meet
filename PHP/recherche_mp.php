@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/recherche_profil.css" type="text/css">
     <title>Recherche mail</title>
 </head>
 <body>
@@ -13,6 +14,12 @@
         echo "<script>alert('Vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
         exit();
     }
+    if (!checkPremium($_SESSION['user_email'])) {
+        echo "<script>alert(\"Votre abonnement a expiré ou vous n'êtes pas un utilisateur premium\"); window.location.href = 'abonnement.php';</script>";
+        exit();
+    }
+    $tableau = array("Accueil" => "accueil_connecté.php", "Profil" => "profil.php", "Messagerie" => "messagerie.php", "Deconnexion" => "deconnexion.php");
+    top_bar($tableau); 
 
     $mail_target = $_GET['recherche_mail'];
     $utilisateurs = lire_fichier_public_user('../Fichiers/logs.txt');

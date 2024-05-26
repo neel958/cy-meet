@@ -25,7 +25,7 @@ session_start();
         $sender_email = $_SESSION['user_email'];
         $receiver_email = $_GET['email'] ?? '';
         if (!checkPremium($sender_email)) {
-            echo "<script>alert('Votre abonnement a expiré ou vous n\'êtes pas connecté.'); window.location.href = 'connexion.php';</script>";
+            echo "<script>alert(\"Votre abonnement a expiré ou vous n'êtes pas un utilisateur premium\"); window.location.href = 'abonnement.php';</script>";
             exit();
         }
 
