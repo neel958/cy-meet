@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/recherche_profil.css" type="text/css">
+    <link rel="stylesheet" href="../CSS/recherche_profil.css" type="text/css">
     <title>Recherche pour distcuer</title>
 </head>
 <body>

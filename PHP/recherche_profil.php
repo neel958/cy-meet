@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>recherche profil</title>
-    <link rel="stylesheet" href="../css/recherche_profil.css" type="text/css">
+    <link rel="stylesheet" href="../CSS/recherche_profil.css" type="text/css">
 </head>
 <body>
 <?php

@@ -8,9 +8,9 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messagerie Privée</title>
-    <link rel="stylesheet" href="../css/dm.css" type="text/css" >
+    <link rel="stylesheet" href="../CSS/dm.css" type="text/css" >
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../js/script.js" type="text/javascript"></script>
+    <script src="../JS/script.js" type="text/javascript"></script>
 </head>
 <body>
     <h1>Messagerie Privée</h1>

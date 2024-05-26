@@ -52,7 +52,7 @@ function supp_msg(timestamp, senderEmail, receiverEmail, element) {
     var messageContent = $(element).closest('.message').data('message');    // closest va chercher le premier parent à la classe message, data va chercher la valeur dans l'attribut de données, on cherche donc le contenu du message
     if (confirm('Voulez-vous vraiment supprimer ce message ?')) {           // pop up de validation
         $.ajax({
-            url: "../php/delete_message.php",
+            url: "../PHP/delete_message.php",
             type: "GET",
             data: {
                 timestamp: timestamp,
