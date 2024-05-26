@@ -1,9 +1,0 @@
-nael180904@gmail.com|na@gmail.com|2024-05-20 22:14:21|test
-nael180904@gmail.com|na@gmail.com|2024-05-20 22:14:24|test 2
-utilisateur1@example.com|nael180904@gmail.com|2024-05-21 00:14:22|ff
-utilisateur2@example.com|utilisateur2@example.com|2024-05-25 14:28:27|ll
-utilisateur2@example.com|utilisateur2@example.com|2024-05-25 14:28:37|az
-utilisateur2@example.com|utilisateur1@example.com|2024-05-25 14:29:33|biens et toi?  
-nael180904@gmail.com|utilisateur2@example.com|2024-05-25 18:18:25|az
-nael180904@gmail.com|nael180904@gmail.com|2024-05-25 18:23:03|az
-l@d.com|nael180904@gmail.com|2024-05-26 18:01:23|az
